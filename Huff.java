@@ -13,15 +13,15 @@ public class Huff {
 	}
 
 	// should return a symbolTable aka HashMap 
-	public HashMap<Integer, Integer> symbolTable(char[] fileCharacters) {
-		HashMap<Integer, Integer> symbols = new HashMap<Integer, Integer>();
-		int f = 1 // variable that will keep track of frequencies
-            	for ( int i : fileCharacters){
+        public HashMap<Character, Integer> symbolTable(char[] fileCharacters) {
+            	HashMap<Character, Integer> symbols = new HashMap<Character, Integer>();
+            	int f = 1; // variable that will hold frequencies
+            	for ( char i : fileCharacters){
                 	if (symbols.containsKey(i)) symbols.put(i, f + 1);
                 	else{symbols.put(i, f); }
-            		}
-            return symbols;
-	}
+            	}
+            	return symbols;
+        }
 
 	// Returns all the characters in the file
 	public char[] readFile(String fileName) {
