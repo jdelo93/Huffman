@@ -8,13 +8,19 @@ public class Huff {
 		Huff test = new Huff();
 		char[] fileCharacters = test.readFile("test.txt");
 		System.out.print(fileCharacters);
+		System.out.println();
+		System.out.print(test.symbolTable(fileCharacters));
 	}
 
 	// should return a symbolTable aka HashMap 
 	public HashMap<Integer, Integer> symbolTable(char[] fileCharacters) {
 		HashMap<Integer, Integer> symbols = new HashMap<Integer, Integer>();
-		// Do something to associate the symbols with an address and frequency 
-		return null;
+		int f = 1 // variable that will keep track of frequencies
+            	for ( int i : fileCharacters){
+                	if (symbols.containsKey(i)) symbols.put(i, f + 1);
+                	else{symbols.put(i, f); }
+            		}
+            return symbols;
 	}
 
 	// Returns all the characters in the file
