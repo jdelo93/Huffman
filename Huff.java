@@ -8,16 +8,7 @@ public class Huff {
 
 	public static void main(String[] args) {
 		Huff test = new Huff();
-		char[] fileCharacters = test.readFile("test.txt");
-		HashMap<Character, Integer> symbolTable = test.symbolTable(fileCharacters);
-		System.out.println(fileCharacters);
-		System.out.print(test.symbolTable(fileCharacters));
-		PriorityQueue<Node> testq = test.createQueue(symbolTable);
-		System.out.println(testq.poll().freq);
-		System.out.println(testq.poll().freq);
-		System.out.println(testq.poll().freq);
-		System.out.println(testq.poll().freq);
-
+		System.out.print(test);
 	}
 
 	// Returns all the characters in the file
@@ -93,4 +84,18 @@ public class Huff {
 			return (int) (thiss.freq - that.freq);
 		}
 	};
+
+	@Override
+	public String toString() {
+		Huff test = new Huff();
+		char[] fileCharacters = test.readFile("test.txt");
+		HashMap<Character, Integer> symbolTable = test.symbolTable(fileCharacters);
+		PriorityQueue<Node> testq = test.createQueue(symbolTable);
+		String answer = "";
+		while(testq.peek() != null) {
+			Node temp = testq.poll();
+			answer += "character: " + temp.ch + " frequency: " + temp.freq + "\n";
+		}
+		return answer;
+	}
 }
