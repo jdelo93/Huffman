@@ -11,19 +11,26 @@ public class Huff {
 		System.out.print(test);
 	}
 	
+	public void traverse(Node top){
+		if (top.left != null) traverse(top.left);
+		System.out.println(top.ch);
+		if (top.right != null) traverse(top.right);
+        }
+	
 	public void combineQueue(PriorityQueue<Node> pq){
-        Node removed1;
-        Node removed2;
-        Node combined;
-        while (pq.size() > 1){
-            removed1 = pq.poll();
-            removed2 = pq.poll();
-            combined = new Node('\0', removed1.freq + removed2.freq, null);
-            combined.left = removed1;
-            combined.right = removed2;
-            removed1.parent = combined;
-            removed2.parent = combined;
-            pq.add(combined);}}
+		Node removed1;
+		Node removed2;
+		Node combined;
+		while (pq.size() > 1){
+			removed1 = pq.poll();
+			removed2 = pq.poll();
+			combined = new Node('\0', removed1.freq + removed2.freq, null);
+			combined.left = removed1;
+			combined.right = removed2;
+			removed1.parent = combined;
+			removed2.parent = combined;
+			pq.add(combined);}
+			}
 
 	// Returns all the characters in the file
 	public char[] readFile(String fileName) {
