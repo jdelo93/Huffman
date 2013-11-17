@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.Comparator;
 
 public class Huff {
 	public static boolean DEBUG; 
@@ -8,9 +9,15 @@ public class Huff {
 	public static void main(String[] args) {
 		Huff test = new Huff();
 		char[] fileCharacters = test.readFile("test.txt");
+		HashMap<Character, Integer> symbolTable = test.symbolTable(fileCharacters);
 		System.out.println(fileCharacters);
 		System.out.print(test.symbolTable(fileCharacters));
-		System.out.print(test.createQueue(test.symbolTable(fileCharacters)));
+		PriorityQueue<Node> testq = test.createQueue(symbolTable);
+		System.out.println(testq.poll().freq);
+		System.out.println(testq.poll().freq);
+		System.out.println(testq.poll().freq);
+		System.out.println(testq.poll().freq);
+
 	}
 
 	// Returns all the characters in the file
@@ -58,6 +65,7 @@ public class Huff {
 
 		public Node(char ch, int freq, Node parent) {
 			this.ch = ch;
+			// freq = weight
 			this.freq = freq;
 			this.parent = parent;
 		}
@@ -69,10 +77,20 @@ public class Huff {
 
 	// Create a priority queue with all the elements
 	public PriorityQueue<Node> createQueue(HashMap<Character, Integer> symbols) {
+		PriorityQueue<Node> pq = new PriorityQueue<Node>(symbols.size(), comparing);
 		// Grabs all the symbols in the hashMap
 		for(char c: symbols.keySet()) {
-			System.out.println(symbols.get(c));
+			Node current = new Node(c, symbols.get(c), null);
+			pq.add(current);
 		}
-		return null;
+		return pq;
 	}
+
+	// Comparable declaration for the priority Queue, compares by frequency 
+	public static Comparator<Node> comparing = new Comparator<Node>() {
+		@Override
+		public int compare(Node thiss, Node that) {
+			return (int) (thiss.freq - that.freq);
+		}
+	};
 }
