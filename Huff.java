@@ -45,4 +45,17 @@ public class Huff {
 		}
 		return fileCharacters;
 	}
+
+	// Leaf Node for each class
+	private static class Node implements Comparable<Node> {
+		private char ch;
+		private int freq;
+		private Node parent;
+
+		public Node(char ch, int freq, Node parent) {
+			this.ch = ch;
+			this.freq = freq;
+			this.parent = parent;
+		}
+	}
 }
