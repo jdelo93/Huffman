@@ -102,7 +102,8 @@ public class Huff {
 	public static Comparator<Node> comparing = new Comparator<Node>() {
 		@Override
 		public int compare(Node thiss, Node that) {
-			return (int) (thiss.freq - that.freq);
+			if(thiss.freq - that.freq == 0) return 1; 
+			else{return (int) (thiss.freq - that.freq);}
 		}
 	};
 
