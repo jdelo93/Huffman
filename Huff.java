@@ -23,7 +23,10 @@ public class Huff {
             combined.right = removed2;
             removed1.parent = combined;
             removed2.parent = combined;
-            pq.add(combined);}}
+            pq.add(combined);
+            System.out.println("Removed characters are " + removed1.ch + " " + removed2.ch);
+        }
+    }
 
 	// Returns all the characters in the file
 	public char[] readFile(String fileName) {
@@ -103,17 +106,43 @@ public class Huff {
 		}
 	};
 
+	// Builds a symbol Table of all bit addresses
+	public HashMap<Character, String> buildMap(Node huffman) {
+		HashMap<Character, String> sTable = new HashMap<Character, String>();
+		String s = "";
+		traverse(huffman, sTable, s);
+		return sTable;
+	}
+
+	public static void traverse(Node huffman, HashMap<Character, String> sTable, String s) {
+		if(huffman.left != null) {
+			traverse(huffman.left, sTable, s + "0");
+		}
+		if (huffman.ch != '\0') sTable.put(huffman.ch, s);;
+		if(huffman.right != null) {
+			traverse(huffman.right, sTable, s + "1");
+		}
+	}
+
+
 	@Override
 	public String toString() {
 		Huff test = new Huff();
 		char[] fileCharacters = test.readFile("test.txt");
 		HashMap<Character, Integer> symbolTable = test.symbolTable(fileCharacters);
-		PriorityQueue<Node> testq = test.createQueue(symbolTable);
-		String answer = "";
-		while(testq.peek() != null) {
-			Node temp = testq.poll();
-			answer += "character: " + temp.ch + " frequency: " + temp.freq + "\n";
-		}
-		return answer;
+		PriorityQueue<Node> testsingleTree = test.createQueue(symbolTable);
+		//PriorityQueue<Node> testPQ = test.createQueue(symbolTable);
+		String answersingleTree = "";
+		//String answerPQ = "";
+		/*
+		while(testPQ.peek() != null) {
+			Node temp = testPQ.poll();
+			answerPQ += "character: " + temp.ch + " frequency: " + temp.freq + "\n";
+		}*/
+		test.combineQueue(testsingleTree);
+		Node treeTest = testsingleTree.poll();
+		HashMap<Character, String> bitMap = new HashMap<Character,String>();
+		bitMap = test.buildMap(treeTest);
+		return bitMap + "";
 	}
 }
