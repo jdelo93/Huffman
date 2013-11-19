@@ -51,6 +51,35 @@ public class Huff {
 		}
 		return fileCharacters;
 	}
+	
+	public int stringConvert(String binaryString){
+        	int binaryInt = Integer.parseInt(binaryString, 2);
+        	return binaryInt;   
+        }   
+    
+    	public BinaryOut writeFile(String fileName, Node huffman){
+        	FileIOC file = new FileIOC();
+        	char[] fileCharacters = readFile(fileName);
+        	HashMap<Character, Integer> symbolTable = symbolTable(fileCharacters);
+        	FileReader fileReader = file.openInputFile(fileName);
+        	BinaryOut binaryFile = file.openBinaryOutputFile();
+        	int magic = 0x00BC;
+        	binaryFile.write(magic, 16);
+        	int tableSize = symbolTable.size();
+        	binaryFile.write(tableSize, 32);
+        	for (char c : fileCharacters){
+        	 	binaryFile.write(c, 8);
+            		binaryFile.write(symbolTable.get(c), 32);
+        	}
+		HashMap<Character, String> bitTable = buildMap(huffman);
+        	for(char c : fileCharacters){
+            		binaryFile.write(stringConvert(bitTable.get(c)), 4);
+        	}
+        	//fileReader.close();
+        	binaryFile.close();
+        	return binaryFile;
+    	}
+       
 
 
 	// Should return a symbolTable aka HashMap 
