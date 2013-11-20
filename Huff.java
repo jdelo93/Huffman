@@ -8,7 +8,8 @@ public class Huff {
 
 	public static void main(String[] args) {
 		Huff test = new Huff();
-		System.out.print(test);
+		//System.out.print(test);
+		test.writeFile(args[0]);
 	}
 	
 	public void combineQueue(PriorityQueue<Node> pq){
@@ -24,7 +25,7 @@ public class Huff {
             removed1.parent = combined;
             removed2.parent = combined;
             pq.add(combined);
-            System.out.println("Removed characters are " + removed1.ch + " " + removed2.ch);
+            //System.out.println("Removed characters are " + removed1.ch + " " + removed2.ch);
         }
     }
 
@@ -101,9 +102,8 @@ public class Huff {
 	// Comparable declaration for the priority Queue, compares by frequency 
 	public static Comparator<Node> comparing = new Comparator<Node>() {
 		@Override
-		public int compare(Node thiss, Node that) {
-			if(thiss.freq - that.freq == 0) return 1; 
-			else{return (int) (thiss.freq - that.freq);}
+		public int compare(Node thiss, Node that) {	
+			return (int) (thiss.freq - that.freq);
 		}
 	};
 
@@ -144,6 +144,38 @@ public class Huff {
 		Node treeTest = testsingleTree.poll();
 		HashMap<Character, String> bitMap = new HashMap<Character,String>();
 		bitMap = test.buildMap(treeTest);
+		writeFile("test.txt");
 		return bitMap + "";
 	}
+
+    public int stringConvert(String binaryString){
+        int binaryInt = Integer.parseInt(binaryString, 2);
+        return binaryInt;   
+}   
+
+    public BinaryOut writeFile(String fileName){
+        FileIOC file = new FileIOC();
+        char[] fileCharacters = readFile(fileName);
+        HashMap<Character, Integer> symbolTable = this.symbolTable(fileCharacters);
+        PriorityQueue<Node> huffPQ = createQueue(symbolTable);
+        combineQueue(huffPQ);
+        Node huffman = huffPQ.poll();
+        FileReader fileReader = file.openInputFile(fileName);
+        BinaryOut binaryFile = file.openBinaryOutputFile();
+        int magic = 0x00BC;
+        binaryFile.write(magic, 16);
+        int tableSize = symbolTable.size();
+        binaryFile.write(tableSize, 32);
+        for (char c : fileCharacters){
+                 binaryFile.write(c, 8);
+                    binaryFile.write(symbolTable.get(c), 32);
+        }
+        HashMap<Character, String> bitTable = buildMap(huffman);
+        for(char c : fileCharacters){
+                    binaryFile.write(stringConvert(bitTable.get(c)), 4);
+        }
+        //fileReader.close();
+        binaryFile.close();
+        return binaryFile;
+            }
 }
