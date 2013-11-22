@@ -148,10 +148,13 @@ public class Huff {
 		return bitMap + "";
 	}
 
-    public int stringConvert(String binaryString){
+    public int[] stringConvert(String binaryString){
+        int[] bits = new int[2];
         int binaryInt = Integer.parseInt(binaryString, 2);
-        return binaryInt;   
-}   
+        bits[0] = binaryInt;
+        bits[1] = binaryString.length();
+        return bits;   
+    }   
 
     public BinaryOut writeFile(String fileName){
         FileIOC file = new FileIOC();
@@ -168,13 +171,16 @@ public class Huff {
         binaryFile.write(tableSize, 32);
         for (char c : fileCharacters){
                  binaryFile.write(c, 8);
-                    binaryFile.write(symbolTable.get(c), 32);
+                 binaryFile.write(symbolTable.get(c), 32);
         }
         HashMap<Character, String> bitTable = buildMap(huffman);
         for(char c : fileCharacters){
-                    binaryFile.write(stringConvert(bitTable.get(c)), 4);
+            	int[] bits = stringConvert(bitTable.get(c));;
+            	System.out.println(bits[0]);
+            	System.out.println(bits[1]);
+            	binaryFile.write(bits[0], bits[1]);
         }
-        //fileReader.close();
+        binaryFile.flush();
         binaryFile.close();
         return binaryFile;
             }
