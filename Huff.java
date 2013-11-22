@@ -102,8 +102,9 @@ public class Huff {
 	// Comparable declaration for the priority Queue, compares by frequency 
 	public static Comparator<Node> comparing = new Comparator<Node>() {
 		@Override
-		public int compare(Node thiss, Node that) {	
-			return (int) (thiss.freq - that.freq);
+		public int compare(Node thiss, Node that) {
+			if (thiss.freq - that.freq == 0) return -1;
+			else{return (int) (thiss.freq - that.freq);}
 		}
 	};
 
